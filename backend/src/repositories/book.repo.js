@@ -1,4 +1,4 @@
-import { Book } from "../models/book.model";
+import { Book } from "../models/book.model.js";
 
 // This will talk directly to our MongoDB
 export const BookRepository = {

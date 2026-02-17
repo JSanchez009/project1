@@ -1,4 +1,4 @@
-import { BookService } from "../services/book.services";
+import { BookService } from "../services/book.services.js";
 
 export const BookController = {
     getAll: async (req, res) => {

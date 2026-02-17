@@ -1,4 +1,4 @@
-import { AuthorRepository } from "../repositories/author.repo";
+import { AuthorRepository } from "../repositories/author.repo.js";
 
 export const AuthorService = {
     getAll: async () => {

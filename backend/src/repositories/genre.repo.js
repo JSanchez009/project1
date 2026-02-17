@@ -1,4 +1,4 @@
-import { Genre } from "../models/genre.model";
+import { Genre } from "../models/genre.model.js";
 
 export const GenreRepository = {
     findAll: () => Genre.find()

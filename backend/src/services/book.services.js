@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { BookRepository } from "../repositories/book.repo";
+import { BookRepository } from "../repositories/book.repo.js";
 
 export const BookService = {
 

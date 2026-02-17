@@ -1,4 +1,4 @@
-import { GenreRepository } from "../repositories/genre.repo";
+import { GenreRepository } from "../repositories/genre.repo.js";
 
 export const GenreService = {
     getAll: async () => {
