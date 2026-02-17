@@ -42,7 +42,7 @@ export const BookService = {
             throw new Error("Invalid update ID");
         }
 
-        const updated = await BookRepository.updateById(id);
+        const updated = await BookRepository.updateById(id, data);
 
         if (!updated) {
             throw new Error("No Book to update");

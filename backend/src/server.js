@@ -7,6 +7,8 @@ app.use(cors())
 
 const PORT = process.env.PORT || 8080;
 
+app.use("/api/books", bookRoutes);
+
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
 });
