@@ -11,12 +11,52 @@ export interface Book {
 export const booksApi = createApi({
   reducerPath: 'booksApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/v1/' }),
+  tagTypes: ['Books'],
   endpoints: (builder) => ({
+
+    // This will get the book data
+    // The .query is our GET
     getBooks: builder.query<Book[], void>({     // this should return an array
       query: () => 'books',
+      providesTags: ['Books'],
+    }),
+
+    // This will let users create new Books
+    // The .mutation is what lets us make changes to our DB
+    createBook: builder.mutation<Book, Partial<Book>>({
+        query: (newBook) => ({
+            url: 'books',
+            method: 'POST',
+            body: newBook,
+        }),
+        // This updates the UI without refreshing the page
+        invalidatesTags: ['Books'],
+    }),
+
+    // This will let us update books, using the books id
+    updateBook: builder.mutation<Book, Partial<Book> & { _id: string }>({
+        query: ({ _id, ...rest }) => ({
+            url: `books/${_id}`,
+            method: 'PUT',
+            body: 'rest',
+        }),
+        invalidatesTags: ['Books'],
+    }),
+
+    // This will let us remove books from our list
+    deleteBook: builder.mutation<{ success: boolean; id: string }, string>({
+        query: (id) => ({
+            url: `books/${id}`,
+            method: 'DELETE',
+        }),
+        invalidatesTags: ['Books'],
     }),
   }),
 })
 
-// The hook to fetch app data
-export const { useGetBooksQuery } = booksApi
+// These are the RTK hooks
+export const { useGetBooksQuery,
+            useCreateBookMutation,
+            useUpdateBookMutation,
+            useDeleteBookMutation
+        } = booksApi
