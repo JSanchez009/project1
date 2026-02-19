@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/db.js';
 import bookRoutes from './routes/book.routes.js';
+import authorRoutes from './routes/author.routes.js';
+import genreRoutes from './routes/genre.routes.js'
 
 dotenv.config();
 
@@ -14,6 +16,8 @@ app.use(cors());
 
 // Routes
 app.use("/api/books", bookRoutes);
+app.use("/api/authors", authorRoutes);
+app.use("/api/books", genreRoutes);
 
 const PORT = process.env.PORT || 8080;
 
