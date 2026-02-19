@@ -1,8 +1,10 @@
 import { useGetBooksQuery } from './features/booksApi'
 
 function App() {
+  // The state will be one o these three
   const { data, error, isLoading } = useGetBooksQuery()
 
+  // If data doesn't work, one of these two will show on the screen
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error loading books</p>
 
