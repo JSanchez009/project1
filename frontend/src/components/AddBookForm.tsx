@@ -11,7 +11,7 @@ const AddBookForm = () => {
     const [price, setPrice] = useState(0)
 
     // preventDefault should prevent our page from refreshing
-    const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         await createBook({

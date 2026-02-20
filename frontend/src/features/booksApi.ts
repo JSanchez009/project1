@@ -34,14 +34,15 @@ export const booksApi = createApi({
     }),
 
     // This will let us update books, using the books id
-    updateBook: builder.mutation<Book, Partial<Book> & { _id: string }>({
-        query: ({ _id, ...rest }) => ({
-            url: `books/${_id}`,
+    updateBook: builder.mutation<Book, Book>({
+        query: (book) => ({
+            url: `books/${book._id}`,
             method: 'PUT',
-            body: 'rest',
+            body: book,
         }),
         invalidatesTags: ['Books'],
     }),
+
 
     // This will let us remove books from our list
     deleteBook: builder.mutation<{ success: boolean; id: string }, string>({
