@@ -7,7 +7,7 @@ const bookSchema = new mongoose.Schema({
         required : true
     },
     author: {
-        type : mongoose.Schema.Types.ObjectId,
+        type :String,  // had to make it a string, so i could POST in the client
         ref: "Author"
     },
     genre: {

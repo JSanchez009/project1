@@ -15,11 +15,11 @@ connectDB();
 app.use(cors());
 
 // Routes
-app.use("/api/books", bookRoutes);
-app.use("/api/authors", authorRoutes);
-app.use("/api/books", genreRoutes);
+app.use("/api/v1/books", bookRoutes);
+app.use("/api/v1/authors", authorRoutes);
+app.use("/api/v1/books", genreRoutes);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
