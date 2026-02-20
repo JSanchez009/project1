@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { useGetBooksQuery, useDeleteBookMutation, useUpdateBookMutation, type Book } from "../features/booksApi";
 import { useState } from "react";
 
@@ -13,8 +13,8 @@ const BooksList = () => {
     const [editedPrice, setEditedPrice] = useState<number>(0)
 
     // Will only happen if the data request fails
-    if (isLoading) return <p>Loading...</p>
-    if (error) return <p>Error loading books</p>
+    if (isLoading) return <Typography>Loading...</Typography>
+    if (error) return <Typography>Error loading books</Typography>
 
     const startEditing = (book: Book) => {
         setEditingId(book._id)
@@ -37,39 +37,86 @@ const BooksList = () => {
 
 
     return (
-    <div>
-      <h2>Books</h2>
+    <TableContainer component={Paper} sx={{ mt: 4 }}>
+        <Typography variant="h5" sx={{ p:2 }}>
+            Books
+        </Typography>
 
-      {data?.map((book) => (
-        <div key={book._id} style={{ marginBottom: '10px' }}>
-          {editingId === book._id ? (
-            <>
-              <input
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-              />
-              <input
-                value={editedAuthor}
-                onChange={(e) => setEditedAuthor(e.target.value)}
-              />
-              <input
-                type="number"
-                value={editedPrice}
-                onChange={(e) => setEditedPrice(Number(e.target.value))}
-              />
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Title</TableCell>
+                    <TableCell>Author</TableCell>
+                    <TableCell>Price</TableCell>
+                    <TableCell>Actions</TableCell>
+                </TableRow>
+            </TableHead>
 
-              <button onClick={handleSave}>Save</button>
-            </>
-          ) : (
-            <>
-              {book.title} - ${book.price}
-              <Button onClick={() => startEditing(book)}>Edit</Button>
-              <Button onClick={() => deleteBook(book._id)}>Delete</Button>
-            </>
-          )}
-        </div>
-      ))}
-    </div>
+            <TableBody>
+                {data?.map((book) => (
+                    <TableRow key={book._id}>
+                        {editingId === book._id ? (
+                            <>
+                                <TableCell>
+                                    <TextField
+                                        value={editedTitle}
+                                        onChange={(e) => setEditedTitle(e.target.value)}
+                                        size="small"
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <TextField
+                                        value={editedAuthor}
+                                        onChange={(e) => setEditedAuthor(e.target.value)}
+                                        size="small"
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <TextField
+                                    type="number"
+                                        value={editedPrice}
+                                        onChange={(e) => setEditedPrice(Number(e.target.value))}
+                                        size="small"
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="contained"
+                                        color="success"
+                                        onClick={handleSave}
+                                        sx={{ mr: 1 }}
+                                    >
+                                        Save
+                                    </Button>
+                                </TableCell>
+                            </>
+                        ) : (
+                            <>
+                                <TableCell>{book.title}</TableCell>
+                                <TableCell>{book.author}</TableCell>
+                                <TableCell>{book.price}</TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => startEditing(book)}
+                                        sx={{ mr: 1 }}
+                                    >Edit
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        onClick={() => deleteBook(book._id)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </TableCell>
+                            </>
+                        )}
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
   )
 }
 

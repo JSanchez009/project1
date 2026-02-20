@@ -1,57 +1,67 @@
-import { useState } from "react";
-import { useCreateBookMutation } from "../features/booksApi";
-import { Button } from "@mui/material";
+import { useState } from "react"
+import { useCreateBookMutation } from "../features/booksApi"
+import {
+  TextField,
+  Button,
+  Paper,
+  Typography,
+  Stack,
+} from "@mui/material"
 
 const AddBookForm = () => {
-    const [createBook] = useCreateBookMutation()
+  const [createBook] = useCreateBookMutation()
 
-    // The states for title, author, and price
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [price, setPrice] = useState(0)
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("") // should be author ID
+  const [price, setPrice] = useState<number>(0)
 
-    // preventDefault should prevent our page from refreshing
-    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-        e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-        await createBook({
-            title,
-            author,
-            price
-        })
+    await createBook({ title, author, price })
 
-        setTitle('')
-        setAuthor('')
-        setPrice(0)
-    }
+    setTitle("")
+    setAuthor("")
+    setPrice(0)
+  }
 
-    // The inputs for the page
-    return (
-        <form onSubmit={handleSubmit}>
-            <h2>Add Book</h2>
+  return (
+    <Paper sx={{ p: 3, mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
+        Add New Book
+      </Typography>
 
-            <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-            />
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={2}>
+          <TextField
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
 
-            <input
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Author"
-            />
+          <TextField
+            label="Author ID"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            helperText="Enter existing Author _id"
+          />
 
-            <input
-                value={price}
-                type="number"
-                onChange={(e) => setPrice(Number(e.target.value))}
-                placeholder="Price"
-            />
+          <TextField
+            label="Price"
+            type="number"
+            value={price}
+            onChange={(e) =>
+              setPrice(Number(e.target.value))
+            }
+          />
 
-            <Button type="submit">Add</Button>
-        </form>
-    )
+          <Button type="submit" variant="contained">
+            Add Book
+          </Button>
+        </Stack>
+      </form>
+    </Paper>
+  )
 }
 
 export default AddBookForm
