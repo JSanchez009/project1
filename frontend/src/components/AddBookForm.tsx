@@ -1,57 +1,84 @@
-import { useState } from "react";
-import { useCreateBookMutation } from "../features/booksApi";
-import { Button } from "@mui/material";
+import { useState } from "react"
+import { useCreateBookMutation } from "../features/booksApi"
+import {
+  TextField,
+  Button,
+  Paper,
+  Typography,
+  Stack,
+} from "@mui/material"
 
 const AddBookForm = () => {
-    const [createBook] = useCreateBookMutation()
+  const [createBook] = useCreateBookMutation()
 
-    // The states for title, author, and price
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [price, setPrice] = useState(0)
+  // basic local state for the form stuff
+  // keeping everything controlled so React doesn't yell at me anymore
+  const [title, setTitle] = useState("")
+  const [author, setAuthor] = useState("") // should be author ID (but actually just a name now lol)
+  
+  // using string here because number inputs get weird when clearing
+  // learned this the hard way
+  const [price, setPrice] = useState<string>("")
 
-    // preventDefault should prevent our page from refreshing
-    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-        e.preventDefault()
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-        await createBook({
-            title,
-            author,
-            price
-        })
+    // quick guard so we don't accidentally send empty junk to the backend
+    if (!title || !author || !price) return
 
-        setTitle('')
-        setAuthor('')
-        setPrice(0)
-    }
+    // converting price to number here instead of in state
+    // seems cleaner and avoids the sticky 0 issue
+    await createBook({ 
+      title, 
+      author, 
+      price: Number(price) 
+    })
 
-    // The inputs for the page
-    return (
-        <form onSubmit={handleSubmit}>
-            <h2>Add Book</h2>
+    // resetting fields so it feels satisfying after submit
+    setTitle("")
+    setAuthor("")
+    setPrice("")
+  }
 
-            <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-            />
+  return (
+    <Paper elevation={4} sx={{p:4, mt: 4, borderRadius: 3}}>
+      <Typography variant="h5" gutterBottom>
+        Add New Book
+      </Typography>
 
-            <input
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Author"
-            />
+      <form onSubmit={handleSubmit}>
+        <Stack spacing={3}>
+          <TextField
+            label="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            fullWidth
+          />
 
-            <input
-                value={price}
-                type="number"
-                onChange={(e) => setPrice(Number(e.target.value))}
-                placeholder="Price"
-            />
+          <TextField
+            label="Author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            helperText="Enter the Author's name"
+            fullWidth
+          />
 
-            <Button type="submit">Add</Button>
-        </form>
-    )
+          <TextField
+            label="Price"
+            type="number"
+            value={price}
+            // keeping this as string so user can actually delete everything
+            onChange={(e) => setPrice(e.target.value)}
+            fullWidth
+          />
+
+          <Button type="submit" variant="contained" size="large">
+            Add Book
+          </Button>
+        </Stack>
+      </form>
+    </Paper>
+  )
 }
 
 export default AddBookForm
